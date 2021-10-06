@@ -452,6 +452,7 @@ object KotlinUtils {
     ): Pair<LightPermission, Boolean> {
         val user = UserHandle.getUserHandleForUid(group.packageInfo.uid)
         val supportsRuntime = group.packageInfo.targetSdkVersion >= Build.VERSION_CODES.M
+                || Utils.isSpecialRuntimePermission(perm.name)
         val isGrantingAllowed = (!group.packageInfo.isInstantApp || perm.isInstantPerm) &&
             (supportsRuntime || !perm.isRuntimeOnly)
         // Do not touch permissions fixed by the system, or permissions that cannot be granted
@@ -632,6 +633,7 @@ object KotlinUtils {
         }
 
         val supportsRuntime = group.packageInfo.targetSdkVersion >= Build.VERSION_CODES.M
+                || Utils.isSpecialRuntimePermission(perm.name)
         val user = UserHandle.getUserHandleForUid(group.packageInfo.uid)
         var newFlags = perm.flags
         var isGranted = perm.isGrantedIncludingAppOp
